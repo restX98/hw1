@@ -86,3 +86,53 @@ CREATE TABLE WishlistProduct (
   FOREIGN KEY (wishlist) REFERENCES Wishlists(ID),
   FOREIGN KEY (product) REFERENCES Products(ID)
 )Engine="InnoDB";
+
+DELIMITER //
+CREATE PROCEDURE CreateCustomer(
+    IN firstName VARCHAR(50),
+    IN lastName VARCHAR(50),
+    IN email VARCHAR(100),
+    IN psw VARCHAR(255),
+    IN phoneNumber VARCHAR(20)
+)
+BEGIN
+  DECLARE existingEmail INT;
+  DECLARE existingPhone INT;
+  
+  SELECT COUNT(*) INTO existingEmail FROM Customers C WHERE C.email = email;
+  SELECT COUNT(*) INTO existingPhone FROM Customers C WHERE C.phoneNumber = phoneNumber;
+  
+  IF existingEmail > 0 THEN
+    SIGNAL SQLSTATE '45001'
+      SET MESSAGE_TEXT = 'Email exists';
+  END IF;
+
+  IF existingPhone > 0 THEN
+    SIGNAL SQLSTATE '45002'
+      SET MESSAGE_TEXT = 'Phone Number exists';
+  END IF;
+  
+  INSERT INTO Customers (firstName, lastName, email, psw, phoneNumber)
+  VALUES (firstName, lastName, email, psw, phoneNumber);
+  
+  SELECT * FROM Customers C WHERE C.ID = LAST_INSERT_ID();
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE GetCustomer(
+  IN email VARCHAR(100)
+)
+BEGIN
+  DECLARE existingEmail INT;
+
+  SELECT COUNT(*) INTO existingEmail FROM Customers C WHERE C.email = email;
+
+  IF existingEmail = 0 THEN
+    SIGNAL SQLSTATE '45003' SET MESSAGE_TEXT = 'Customer doesn''t exist';
+  ELSE
+    SELECT * FROM Customers C WHERE C.email = email;
+  END IF;
+END //
+DELIMITER ;
