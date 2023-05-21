@@ -21,9 +21,25 @@ class CustomerMgr {
     }
 
     public function authenticateCustomer($email, $psw) {
-        $customerRow = $this->databaseManager->getCustomer($email);
+        $customerRow = $this->databaseManager->getCustomerByLogin($email);
         if(password_verify($psw, $customerRow->psw)){
             $_SESSION["sessionId"] = $customerRow->ID;
+            return new Customer(
+                $customerRow->ID,
+                $customerRow->firstName,
+                $customerRow->lastName,
+                $customerRow->email,
+                $customerRow->phoneNumber
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public function getCurrentCustomer() {
+        if(isset($_SESSION['sessionId'])) {
+            $id = $_SESSION['sessionId'];
+            $customerRow = $this->databaseManager->getCustomerByID($id);
             return new Customer(
                 $customerRow->ID,
                 $customerRow->firstName,

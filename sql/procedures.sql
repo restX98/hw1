@@ -33,7 +33,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE GetCustomer(
+CREATE PROCEDURE GetCustomerByLogin(
   IN email VARCHAR(100)
 )
 BEGIN
@@ -45,6 +45,23 @@ BEGIN
     SIGNAL SQLSTATE '45003' SET MESSAGE_TEXT = 'Customer doesn''t exist';
   ELSE
     SELECT * FROM Customers C WHERE C.email = email;
+  END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetCustomerByID(
+  IN ID INT
+)
+BEGIN
+  DECLARE existingID INT;
+
+  SELECT COUNT(*) INTO existingID FROM Customers C WHERE C.ID = ID;
+
+  IF existingID = 0 THEN
+    SIGNAL SQLSTATE '45003' SET MESSAGE_TEXT = 'Customer doesn''t exist';
+  ELSE
+    SELECT * FROM Customers C WHERE C.ID = ID;
   END IF;
 END //
 DELIMITER ;

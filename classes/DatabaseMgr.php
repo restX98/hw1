@@ -36,10 +36,24 @@ class DatabaseMgr {
         return $customer;
     }
 
-    public function getCustomer($email) {
+    public function getCustomerByLogin($email) {
         $email = mysqli_real_escape_string($this->connection, $email);
 
-        $query = "CALL GetCustomer('$email')";
+        $query = "CALL GetCustomerByLogin('$email')";
+
+        $result = mysqli_query($this->connection, $query);
+
+        $customer = mysqli_fetch_object($result);
+        
+        mysqli_free_result($result);
+
+        return $customer;
+    }
+
+    public function getCustomerByID($id) {
+        $id = mysqli_real_escape_string($this->connection, $id);
+
+        $query = "CALL GetCustomerByID($id)";
 
         $result = mysqli_query($this->connection, $query);
 
