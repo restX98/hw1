@@ -119,7 +119,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 DELIMITER //
 CREATE PROCEDURE GetCustomer(
   IN email VARCHAR(100)
@@ -134,5 +133,32 @@ BEGIN
   ELSE
     SELECT * FROM Customers C WHERE C.email = email;
   END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE AddAddressToCustomer(
+  IN street VARCHAR(255),
+  IN houseNumber VARCHAR(10),
+  IN postalCode VARCHAR(10),
+  IN city VARCHAR(255),
+  IN province VARCHAR(255),
+  IN country VARCHAR(255),
+  IN customerID INT
+)
+BEGIN
+  INSERT INTO Addresses (street, houseNumber, postalCode, city, province, country, customer)
+  VALUES (street, houseNumber, postalCode, city, province, country, customerID);
+
+  SELECT LAST_INSERT_ID() AS ID;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetCustomerAddresses(
+  IN customerID INT
+)
+BEGIN
+  SELECT * FROM Addresses WHERE customer = customerID;
 END //
 DELIMITER ;

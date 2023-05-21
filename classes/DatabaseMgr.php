@@ -49,6 +49,39 @@ class DatabaseMgr {
 
         return $customer;
     }
+
+    public function addAddressToCustomer($street, $houseNumber, $postalCode, $city, $province, $country, $customerID) {
+        $street = mysqli_real_escape_string($this->connection, $street);
+        $houseNumber = mysqli_real_escape_string($this->connection, $houseNumber);
+        $postalCode = mysqli_real_escape_string($this->connection, $postalCode);
+        $city = mysqli_real_escape_string($this->connection, $city);
+        $province = mysqli_real_escape_string($this->connection, $province);
+        $country = mysqli_real_escape_string($this->connection, $country);
+        
+        $query = "CALL AddAddressToCustomer('$street', '$houseNumber', '$postalCode', '$city', '$province', '$country', '$customerID')";
+
+        $result = mysqli_query($this->connection, $query);
+        $addressId = mysqli_fetch_row($result);
+
+        mysqli_free_result($result);
+        
+        return $addressId[0];
+    }
+
+    public function getCustomerAddresses($customerID) {
+        $query = "CALL GetCustomerAddresses('$customerID')";
+
+        $result = mysqli_query($this->connection, $query);
+        $addresses = Array();
+
+        while ($row = mysqli_fetch_object($result)) {
+            $addresses[] = $row;
+        }
+
+        mysqli_free_result($result);
+
+        return $addresses;
+    }
 }
 
 ?>
