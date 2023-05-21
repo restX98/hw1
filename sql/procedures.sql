@@ -141,3 +141,37 @@ BEGIN
   WHERE id = p_product_id;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetProduct(
+  IN p_productCode VARCHAR(50)
+)
+BEGIN
+  SELECT Products.*, Categories.name AS categoryName
+  FROM Products
+  INNER JOIN Categories ON Products.category = Categories.id
+  WHERE Products.cod = p_productCode;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE AddProductToWishlist(
+  IN p_customerId INT,
+  IN p_productId INT
+)
+BEGIN
+  DECLARE v_wishlistId INT;
+  
+  SELECT ID INTO v_wishlistId
+  FROM Wishlists
+  WHERE customer = p_customerId;
+  
+  IF v_wishlistId IS NULL THEN
+    INSERT INTO Wishlists (customer) VALUES (p_customerId);
+    SET v_wishlistId = LAST_INSERT_ID();
+  END IF;
+  
+  INSERT INTO WishlistProduct (wishlist, product)
+  VALUES (v_wishlistId, p_productId);
+END //
+DELIMITER ;

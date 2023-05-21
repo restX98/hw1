@@ -124,9 +124,22 @@ class DatabaseMgr {
     }
 
     public function removeProduct($id) {
+        $id = mysqli_real_escape_string($this->connection, $id);
         $query = "CALL RemoveProduct('$id')";
 
         $result = mysqli_query($this->connection, $query);
+    }
+
+    public function getProduct($cod) {
+        $cod = mysqli_real_escape_string($this->connection, $cod);
+        $query = "CALL GetProduct('$cod')";
+
+        $result = mysqli_query($this->connection, $query);
+
+        $product = mysqli_fetch_object($result);
+        mysqli_free_result($result);
+
+        return $product;
     }
 }
 
