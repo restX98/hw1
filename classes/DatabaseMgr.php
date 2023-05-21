@@ -82,6 +82,52 @@ class DatabaseMgr {
 
         return $addresses;
     }
+
+    public function createCategory($categoryName) {
+        $query = "CALL CreateCategory('$categoryName')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
+
+    public function updateCategory($id, $categoryName) {
+        $query = "CALL UpdateCategory('$id', '$categoryName')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
+
+    public function removeCategory($id) {
+        $query = "CALL RemoveCategory('$id')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
+
+    public function createProduct($cod, $name, $price, $category) {
+        $cod = mysqli_real_escape_string($this->connection, $cod);
+        $name = mysqli_real_escape_string($this->connection, $name);
+        $price = mysqli_real_escape_string($this->connection, $price);
+        $category = mysqli_real_escape_string($this->connection, $category);
+
+        $query = "CALL CreateProduct('$cod', '$name', '$price', '$category')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
+
+    public function updateProduct($id, $cod, $name, $price, $category) {
+        $cod = mysqli_real_escape_string($this->connection, $cod);
+        $name = mysqli_real_escape_string($this->connection, $name);
+        $price = mysqli_real_escape_string($this->connection, $price);
+        $category = mysqli_real_escape_string($this->connection, $category);
+
+        $query = "CALL UpdateProduct('$id', '$cod', '$name', '$price', '$category')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
+
+    public function removeProduct($id) {
+        $query = "CALL RemoveProduct('$id')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
 }
 
 ?>
