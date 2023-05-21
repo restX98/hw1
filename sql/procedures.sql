@@ -188,7 +188,30 @@ BEGIN
     SET v_wishlistId = LAST_INSERT_ID();
   END IF;
   
-  INSERT INTO WishlistProduct (wishlist, product)
-  VALUES (v_wishlistId, p_productId);
+  IF EXISTS (
+    SELECT *
+    FROM WishlistProduct
+    WHERE wishlist = v_wishlistId AND product = p_productId
+  ) THEN
+    SIGNAL SQLSTATE '45004' SET MESSAGE_TEXT = 'Product already exists in wishlist.';
+  ELSE
+    INSERT INTO WishlistProduct (wishlist, product)
+    VALUES (v_wishlistId, p_productId);
+  END IF;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetWishlistProducts(
+  IN customerID INT
+)
+BEGIN
+  SELECT Products.*, Categories.name AS categoryName
+  FROM Products
+  INNER JOIN WishlistProduct ON Products.id = WishlistProduct.product
+  INNER JOIN Categories ON Products.category = Categories.id
+  INNER JOIN Wishlists ON WishlistProduct.wishlist = Wishlists.ID
+  WHERE Wishlists.customer = customerID;
+END //
+DELIMITER ;
+

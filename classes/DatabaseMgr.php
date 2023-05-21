@@ -155,6 +155,29 @@ class DatabaseMgr {
 
         return $product;
     }
+
+    public function addProductToWishlist($customerID, $productID) {
+        $customerID = mysqli_real_escape_string($this->connection, $customerID);
+        $productID = mysqli_real_escape_string($this->connection, $productID);
+        $query = "CALL AddProductToWishlist('$customerID', '$productID')";
+
+        $result = mysqli_query($this->connection, $query);
+    }
+
+    public function getWishlistProducts($customerID) {
+        $customerID = mysqli_real_escape_string($this->connection, $customerID);
+        $query = "CALL GetWishlistProducts('$customerID')";
+
+        $result = mysqli_query($this->connection, $query);
+        
+        $products = Array();
+        while ($row = mysqli_fetch_object($result)) {
+            $products[] = $row;
+        }
+        mysqli_free_result($result);
+
+        return $products;
+    }
 }
 
 ?>

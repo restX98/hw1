@@ -4,11 +4,11 @@ require_once 'DatabaseMgr.php';
 require_once 'Address.php';
 
 class Product {
-    private $id;
-    private $cod;
-    private $name;
-    private $price;
-    private $category;
+    public $id;
+    public $cod;
+    public $name;
+    public $price;
+    public $category;
 
     public function __construct($id, $cod, $name, $price, $category) {
       $this->id = $id;
