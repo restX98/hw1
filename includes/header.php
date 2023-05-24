@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Il mio sito web</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    <header>
+<?php
+    require_once '../classes/AssetMgr.php';
+    AssetMgr::addCss("/css/header.css");
+?>
+
+<?php include("head.php"); ?>
+<header>
     <div class="top-bar">
         <div class="container">
         <div class="logo">
@@ -35,5 +33,5 @@
         </ul>
         </div>
     </div>
-    </header>
-    <main>
+</header>
+<main>
