@@ -94,6 +94,13 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE GetCategories()
+BEGIN
+  SELECT * FROM Categories;
+END //
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE CreateCategory(
   IN p_name VARCHAR(255)
 )

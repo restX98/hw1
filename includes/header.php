@@ -25,11 +25,14 @@
     <div class="bottom-bar">
         <div class="container">
         <ul class="categories">
-            <li><a href="#">Category 1</a></li>
-            <li><a href="#">Category 2</a></li>
-            <li><a href="#">Category 3</a></li>
-            <li><a href="#">Category 4</a></li>
-            <li><a href="#">Category 5</a></li>
+            <?php
+            require_once '../classes/ProductMgr.php';
+            $productMgr = new ProductMgr();
+            $categories = $productMgr->getCategories();
+            foreach ($categories as $category) {
+                echo '<li><a href="#">' . $category . '</a></li>';
+            }
+            ?>
         </ul>
         </div>
     </div>

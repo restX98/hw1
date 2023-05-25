@@ -109,6 +109,27 @@ class DatabaseMgr {
         return $addresses;
     }
 
+    public function getCategories() {
+        try {
+            $query = "CALL GetCategories()";
+
+            $result = mysqli_query($this->connection, $query);
+
+            $categories = Array();
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $categories[] = $row['name'];
+            }
+
+            mysqli_free_result($result);
+
+            return $categories;
+        } catch(Exception $ex) {
+            return Array();
+        }
+    }
+
+
     public function createCategory($categoryName) {
         $query = "CALL CreateCategory('$categoryName')";
 

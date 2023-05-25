@@ -19,5 +19,10 @@ class ProductMgr {
             $productRow->category
         );
     }
+
+    public function getCategories() {
+        $categoriesRow = $this->databaseManager->getCategories();
+        return $categoriesRow;
+    }
 }
 ?>
