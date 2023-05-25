@@ -7,6 +7,7 @@
     require_once '../classes/AssetMgr.php';
     AssetMgr::addCss('/css/base.css');
     AssetMgr::renderCss();
+    AssetMgr::renderJs();
     ?>
 </head>
 <body>

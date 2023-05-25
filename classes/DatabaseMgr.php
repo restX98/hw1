@@ -3,7 +3,7 @@ class DatabaseMgr {
     private $connection;
 
     public function __construct() {
-        $configFilePath = 'config/db.ini';
+        $configFilePath = '../config/db.ini';
         $config = parse_ini_file($configFilePath);
 
         $host = $config['host'];
@@ -37,17 +37,25 @@ class DatabaseMgr {
     }
 
     public function getCustomerByLogin($email) {
-        $email = mysqli_real_escape_string($this->connection, $email);
+        try {
+            $email = mysqli_real_escape_string($this->connection, $email);
+            $query = "CALL GetCustomerByLogin('$email')";
 
-        $query = "CALL GetCustomerByLogin('$email')";
+            $result = mysqli_query($this->connection, $query);
 
-        $result = mysqli_query($this->connection, $query);
+            $customer = mysqli_fetch_assoc($result);
+            mysqli_free_result($result);
 
-        $customer = mysqli_fetch_object($result);
-        
-        mysqli_free_result($result);
-
-        return $customer;
+            return $customer;
+        } catch(mysqli_sql_exception  $ex) {
+            if ($ex->getSQLState() === "45003") {
+                return array("error" => true, "mailError" => true);
+            } else {
+                return array("error" => true);
+            }
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
     }
 
     public function getCustomerByID($id) {
