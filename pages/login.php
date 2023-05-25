@@ -16,6 +16,7 @@ if ($currentCustomer !== null) {
 ?>
 
 <?php include("../includes/noHeader.php"); ?>
+
 <div id="login">
     <div id="server-error" class="error-message server-error"></div>
     <div class="container">
