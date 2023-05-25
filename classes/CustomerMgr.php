@@ -51,6 +51,12 @@ class CustomerMgr {
         $id = Session::get("sessionId");
         if(isset($id)) {
             $customerRow = $this->databaseManager->getCustomerByID($id);
+
+            if(is_null($customerRow)) {
+                Session::delete("sessionId");
+                return null;
+            }
+
             return new Customer(
                 $customerRow->ID,
                 $customerRow->firstName,

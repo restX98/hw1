@@ -1,8 +1,20 @@
-<?php 
+<?php
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/login.css");
 AssetMgr::addJs("/js/login.js");
+
+// Verifica se l'utente è già loggato
+require_once '../classes/CustomerMgr.php';
+$customerMgr = new CustomerMgr();
+$currentCustomer = $customerMgr->getCurrentCustomer();
+
+// Se l'utente è loggato, esegui il redirect alla home
+if ($currentCustomer !== null) {
+    header("Location: home"); // Sostituisci "home.php" con il percorso corretto per la home
+    exit();
+}
 ?>
+
 <?php include("../includes/noHeader.php"); ?>
 <div id="login">
     <div id="server-error" class="error-message server-error"></div>

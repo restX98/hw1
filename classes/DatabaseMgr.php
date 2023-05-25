@@ -59,17 +59,21 @@ class DatabaseMgr {
     }
 
     public function getCustomerByID($id) {
-        $id = mysqli_real_escape_string($this->connection, $id);
+        try {
+            $id = mysqli_real_escape_string($this->connection, $id);
 
-        $query = "CALL GetCustomerByID($id)";
+            $query = "CALL GetCustomerByID($id)";
 
-        $result = mysqli_query($this->connection, $query);
+            $result = mysqli_query($this->connection, $query);
 
-        $customer = mysqli_fetch_object($result);
-        
-        mysqli_free_result($result);
+            $customer = mysqli_fetch_object($result);
+            
+            mysqli_free_result($result);
 
-        return $customer;
+            return $customer;
+        } catch(Exception $ex) {
+            return null;
+        }
     }
 
     public function addAddressToCustomer($street, $houseNumber, $postalCode, $city, $province, $country, $customerID) {
