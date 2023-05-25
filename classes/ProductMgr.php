@@ -1,6 +1,7 @@
 <?php
 require_once 'DatabaseMgr.php';
 require_once 'Product.php';
+require_once 'Category.php';
 
 class ProductMgr {
     private $databaseManager;
@@ -22,7 +23,16 @@ class ProductMgr {
 
     public function getCategories() {
         $categoriesRow = $this->databaseManager->getCategories();
-        return $categoriesRow;
+
+        $categories = array();
+        foreach ($categoriesRow as $row) {
+            $categories[] = new Category(
+                $row->id,
+                $row->name
+            );
+        }
+
+        return $categories;
     }
 }
 ?>

@@ -117,8 +117,8 @@ class DatabaseMgr {
 
             $categories = Array();
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                $categories[] = $row['name'];
+            while ($row = mysqli_fetch_object($result)) {
+                $categories[] = $row;
             }
 
             mysqli_free_result($result);

@@ -30,7 +30,7 @@
             $productMgr = new ProductMgr();
             $categories = $productMgr->getCategories();
             foreach ($categories as $category) {
-                echo '<li><a href="#">' . $category . '</a></li>';
+                echo "<li><a href=$category->url> $category->name </a></li>";
             }
             ?>
         </ul>
