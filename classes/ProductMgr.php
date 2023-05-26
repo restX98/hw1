@@ -12,12 +12,17 @@ class ProductMgr {
 
     public function getProduct($cod) {
         $productRow = $this->databaseManager->getProduct($cod);
+        $category = new Category(
+            $productRow->category,
+            $productRow->categoryName,
+            $productRow->categoryCod
+        );
         return new Product(
             $productRow->id,
             $productRow->cod,
             $productRow->NAME,
             $productRow->price,
-            $productRow->category
+            $category
         );
     }
 

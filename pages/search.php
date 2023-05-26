@@ -16,9 +16,15 @@ AssetMgr::addCss("/css/search.css");
         foreach ($products as $product) {
             ?>
             <div class="product">
-                <img src=<?php echo "https://picsum.photos/600?$product->id"; ?> alt="<?php echo $product->name; ?>">
+                <a href=<?php echo $product->url; ?>>
+                    <img src=<?php echo "https://picsum.photos/id/$product->id/600"?> alt="<?php echo $product->name; ?>">
+                </a>
                 <div class="info">
-                    <span class="title"><?php echo $product->name; ?></span>
+                    <a href=<?php echo $product->url; ?>>
+                        <span class="title">
+                                <?php echo $product->name; ?>
+                        </span>
+                    </a>
                     <span class="price"><?php echo $product->price; ?></span>
                     <div class="details">
                         <span class="code"><?php echo $product->cod; ?></span>

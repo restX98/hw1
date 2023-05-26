@@ -9,6 +9,7 @@ class Product {
     public $name;
     public $price;
     public $category;
+    public $url;
 
     public function __construct($id, $cod, $name, $price, $category) {
       $this->id = $id;
@@ -16,6 +17,7 @@ class Product {
       $this->name = $name;
       $this->price = $price;
       $this->category = $category;
+      $this->url = "/hw1/product/$cod";
     }
 }
 ?>

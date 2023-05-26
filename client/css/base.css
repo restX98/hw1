@@ -9,6 +9,11 @@ body {
   margin-bottom: 10px;
 }
 
+a {
+  color: inherit;
+  text-decoration: unset;
+}
+
 /* Media Query per dispositivi mobili */
 @media (max-width: 600px) {
   .error-message {
