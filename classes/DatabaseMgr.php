@@ -177,6 +177,29 @@ class DatabaseMgr {
         $result = mysqli_query($this->connection, $query);
     }
 
+    public function getProductsByCategory($category) {
+        try{
+            $category = mysqli_real_escape_string($this->connection, $category);
+            $query = "CALL GetProductsByCategory('$category')";
+
+            $result = mysqli_query($this->connection, $query);
+
+            $product = mysqli_fetch_object($result);
+
+            $products = Array();
+
+            while ($row = mysqli_fetch_object($result)) {
+                $products[] = $row;
+            }
+
+            mysqli_free_result($result);
+
+            return $products;
+        } catch(Exception $ex) {
+            return Array();
+        }
+    }
+
     public function getProduct($cod) {
         $cod = mysqli_real_escape_string($this->connection, $cod);
         $query = "CALL GetProduct('$cod')";

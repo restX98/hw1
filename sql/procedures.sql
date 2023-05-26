@@ -102,11 +102,12 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE CreateCategory(
-  IN p_name VARCHAR(255)
+  IN p_name VARCHAR(255),
+  IN p_cod VARCHAR(255)
 )
 BEGIN
-  INSERT INTO Categories (name)
-  VALUES (p_name);
+  INSERT INTO Categories (name, cod)
+  VALUES (p_name, p_cod);
 END //
 DELIMITER ;
 
@@ -171,10 +172,26 @@ CREATE PROCEDURE GetProduct(
   IN p_productCode VARCHAR(50)
 )
 BEGIN
-  SELECT Products.*, Categories.name AS categoryName
+  SELECT Products.*, Categories.name AS categoryName, Categories.cod AS categoryCod
   FROM Products
   INNER JOIN Categories ON Products.category = Categories.id
   WHERE Products.cod = p_productCode;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsByCategory(
+  IN categoryCod VARCHAR(255)
+)
+BEGIN
+  IF categoryCod IS NULL THEN
+    SELECT Products.*, Categories.name AS categoryName, Categories.cod AS categoryCod
+    FROM Products INNER JOIN Categories ON Products.category = Categories.id;
+  ELSE
+    SELECT Products.*, Categories.name AS categoryName, Categories.cod AS categoryCod
+    FROM Products INNER JOIN Categories ON Products.category = Categories.id
+    WHERE category = (SELECT id FROM Categories WHERE cod = categoryCod);
+  END IF;
 END //
 DELIMITER ;
 
@@ -213,7 +230,7 @@ CREATE PROCEDURE GetWishlistProducts(
   IN customerID INT
 )
 BEGIN
-  SELECT Products.*, Categories.name AS categoryName
+  SELECT Products.*, Categories.name AS categoryName, Categories.cod AS categoryCod
   FROM Products
   INNER JOIN WishlistProduct ON Products.id = WishlistProduct.product
   INNER JOIN Categories ON Products.category = Categories.id

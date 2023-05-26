@@ -28,11 +28,34 @@ class ProductMgr {
         foreach ($categoriesRow as $row) {
             $categories[] = new Category(
                 $row->id,
-                $row->name
+                $row->name,
+                $row->cod
             );
         }
 
         return $categories;
+    }
+
+    public function getProducts($category = null) {
+        $productsRow = $this->databaseManager->getProductsByCategory($category);
+
+        $products = array();
+        foreach ($productsRow as $row) {
+            $category = new Category(
+                $row->category,
+                $row->categoryName,
+                $row->categoryCod
+            );
+            $products[] = new Product(
+                $row->id,
+                $row->cod,
+                $row->NAME,
+                $row->price,
+                $category
+            );
+        }
+
+        return $products;
     }
 }
 ?>
