@@ -57,11 +57,23 @@ header .search-bar button[type="submit"] {
   background-color: #fcbb6a;
 }
 
-header .cart a,
-header .user-banner a {
-  color: #fff;
+header .cart,
+header .user {
+  display: inline-block;
   margin-left: 20px;
+}
+
+header .cart a ,
+header .user a {
   text-decoration: none;
+  color: #333;
+}
+
+header .cart a img,
+header .user a img {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
 }
 
 /* Bottom Bar */
