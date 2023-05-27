@@ -6,7 +6,7 @@ AssetMgr::addJs("/js/login.js");
 // Verifica se l'utente è già loggato
 require_once '../classes/CustomerMgr.php';
 $customerMgr = new CustomerMgr();
-$currentCustomer = $customerMgr->getCurrentCustomer();
+$currentCustomer = $customerMgr::getCurrentCustomer();
 
 // Se l'utente è loggato, esegui il redirect alla home
 if ($currentCustomer !== null) {

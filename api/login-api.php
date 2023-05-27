@@ -10,7 +10,7 @@ $password = $data['password'];
 
 try{
     $customerMgr = new CustomerMgr();
-    $customer = $customerMgr->authenticateCustomer($email, $password);
+    $customer = $customerMgr::authenticateCustomer($email, $password);
     if ($customer) {
         $response = array('success' => true);
     }

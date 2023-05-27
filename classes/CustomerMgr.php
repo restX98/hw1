@@ -5,14 +5,8 @@ require_once 'Session.php';
 require_once 'Exceptions.php';
 
 class CustomerMgr {
-    private $databaseManager;
-
-    public function __construct() {
-        $this->databaseManager = new DatabaseMgr();
-    }
-
-    public function createCustomer($firstName, $lastName, $email, $psw, $phoneNumber) {
-        $newCustomer = $this->databaseManager->createCustomer($firstName, $lastName, $email, $psw, $phoneNumber);
+    public static function createCustomer($firstName, $lastName, $email, $psw, $phoneNumber) {
+        $databaseManager = new DatabaseMgr();
         return new Customer(
             $newCustomer->ID,
             $newCustomer->firstName,
@@ -22,8 +16,8 @@ class CustomerMgr {
         );
     }
 
-    public function authenticateCustomer($email, $psw) {
-        $customerRow = $this->databaseManager->getCustomerByLogin($email);
+    public static function authenticateCustomer($email, $psw) {
+        $databaseManager = new DatabaseMgr();
 
         if (isset($customerRow['error']) && $customerRow['error'] === true) {
             if ($customerRow['mailError'] === true) {
@@ -47,10 +41,11 @@ class CustomerMgr {
         }
     }
 
-    public function getCurrentCustomer() {
+    public static function getCurrentCustomer() {
+        $databaseManager = new DatabaseMgr();
         $id = Session::get("sessionId");
         if(isset($id)) {
-            $customerRow = $this->databaseManager->getCustomerByID($id);
+            $customerRow = $databaseManager->getCustomerByID($id);
 
             if(is_null($customerRow)) {
                 Session::delete("sessionId");
