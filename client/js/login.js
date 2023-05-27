@@ -7,7 +7,7 @@ class Login {
     this.passwordError = document.getElementById("password-error");
     this.serverError = document.getElementById("server-error");
 
-    this.form.addEventListener("submit", this.handleSubmit.bind(this));
+    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
   }
 
   handleSubmit(event) {
@@ -30,7 +30,7 @@ class Login {
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          window.location.href = "/hw1/home";
+          window.location.href = "/hw1/profile";
         } else {
           if (response.mailError) {
             this.displayError(
@@ -91,10 +91,7 @@ class Login {
     this.emailError.style.display = "none";
     this.passwordError.textContent = "";
     this.passwordError.style.display = "none";
-  }
-
-  submitForm() {
-    console.log("Form submitted");
+    this.serverError.textContent = "";
   }
 }
 

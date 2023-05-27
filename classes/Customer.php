@@ -6,10 +6,10 @@ require_once 'Product.php';
 
 class Customer {
     private $id;
-    private $firstName;
-    private $lastName;
-    private $email;
-    private $phoneNumber;
+    public $firstName;
+    public $lastName;
+    public $email;
+    public $phoneNumber;
 
     public function __construct($id, $firstName, $lastName, $email, $phoneNumber) {
       $this->id = $id;

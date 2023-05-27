@@ -1,0 +1,62 @@
+.profile {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.personal-info {
+  grid-column: 1 / -1;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.info-row label {
+  width: 120px;
+  font-weight: bold;
+}
+
+.orders,
+.addresses {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.orders h2,
+.addresses h2 {
+  margin-bottom: 10px;
+}
+
+.order-list,
+.address-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-list li,
+.address-list li {
+  margin-bottom: 5px;
+}
+
+/* Media query per dispositivi mobili */
+@media (max-width: 768px) {
+  .profile {
+    grid-template-columns: 1fr;
+  }
+  
+  .personal-info {
+    grid-column: 1;
+  }
+  
+  .orders,
+  .addresses {
+    grid-column: 1;
+  }
+}

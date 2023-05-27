@@ -7,6 +7,8 @@ require_once 'Exceptions.php';
 class CustomerMgr {
     public static function createCustomer($firstName, $lastName, $email, $psw, $phoneNumber) {
         $databaseManager = new DatabaseMgr();
+
+        $customerRow = $databaseManager->createCustomer($firstName, $lastName, $email, $psw, $phoneNumber);
         return new Customer(
             $newCustomer->ID,
             $newCustomer->firstName,
@@ -19,6 +21,7 @@ class CustomerMgr {
     public static function authenticateCustomer($email, $psw) {
         $databaseManager = new DatabaseMgr();
 
+        $customerRow = $databaseManager->getCustomerByLogin($email);
         if (isset($customerRow['error']) && $customerRow['error'] === true) {
             if ($customerRow['mailError'] === true) {
                 throw new InvalidEmailException("Email non valida.");

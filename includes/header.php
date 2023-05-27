@@ -15,7 +15,7 @@
                 <button type="submit">Search</button>
             </div>
             <div class="user">
-                <a href="/hw1/login">
+                <a href="/hw1/profile">
                     <img src="/hw1/client/icons/user.svg" alt="User Icon">
                 </a>
             </div>
