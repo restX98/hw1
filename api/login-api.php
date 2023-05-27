@@ -3,7 +3,6 @@ require_once '../classes/CustomerMgr.php';
 require_once '../classes/Session.php';
 require_once '../classes/Exceptions.php';
 
-
 $data = $data = json_decode(file_get_contents('php://input'), true);
 $email = $data['email'];
 $password = $data['password'];

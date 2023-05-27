@@ -19,21 +19,31 @@ class DatabaseMgr {
     }
 
     public function createCustomer($firstName, $lastName, $email, $psw, $phoneNumber) {
-        $firstName = mysqli_real_escape_string($this->connection, $firstName);
-        $lastName = mysqli_real_escape_string($this->connection, $lastName);
-        $email = mysqli_real_escape_string($this->connection, $email);
-        $psw = mysqli_real_escape_string($this->connection, $psw);
-        $psw = password_hash($psw, PASSWORD_BCRYPT);
-        $phoneNumber = mysqli_real_escape_string($this->connection, $phoneNumber);
+        try{
+            $firstName = mysqli_real_escape_string($this->connection, $firstName);
+            $lastName = mysqli_real_escape_string($this->connection, $lastName);
+            $email = mysqli_real_escape_string($this->connection, $email);
+            $psw = mysqli_real_escape_string($this->connection, $psw);
+            $psw = password_hash($psw, PASSWORD_BCRYPT);
+            $phoneNumber = mysqli_real_escape_string($this->connection, $phoneNumber);
 
-        $query = "CALL CreateCustomer('$firstName', '$lastName', '$email', '$psw', '$phoneNumber')";
-        
-        $result = mysqli_query($this->connection, $query);
-        $customer = mysqli_fetch_object($result);
-        
-        mysqli_free_result($result);
+            $query = "CALL CreateCustomer('$firstName', '$lastName', '$email', '$psw', '$phoneNumber')";
+            
+            $result = mysqli_query($this->connection, $query);
+            $customer = mysqli_fetch_assoc($result);
+            
+            mysqli_free_result($result);
 
-        return $customer;
+            return $customer;
+        } catch(mysqli_sql_exception  $ex) {
+            if ($ex->getSQLState() === "45001") {
+                return array("error" => true, "customerExists" => true);
+            } else {
+                return array("error" => true);
+            }
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
     }
 
     public function getCustomerByLogin($email) {

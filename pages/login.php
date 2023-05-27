@@ -26,7 +26,7 @@ if ($currentCustomer !== null) {
             <div id="password-error" class="error-message"></div>
             <button type="submit">Login</button>
             <div class="register-link">
-                <p>Non hai un account? <a href="#">Registrati</a></p>
+                <p>Non hai un account? <a href="/hw1/signin">Registrati</a></p>
             </div>
         </form>
     </div>

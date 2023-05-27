@@ -9,12 +9,22 @@ class CustomerMgr {
         $databaseManager = new DatabaseMgr();
 
         $customerRow = $databaseManager->createCustomer($firstName, $lastName, $email, $psw, $phoneNumber);
+        
+        if (isset($customerRow['error']) && $customerRow['error'] === true) {
+            if ($customerRow['customerExists'] === true) {
+                throw new CustomerExistsException("Questa mail è già registrata.");
+            } else {
+                throw new Exception("Database error.");
+            }
+        }
+        
+        Session::set("sessionId", $customerRow['ID']);
         return new Customer(
-            $newCustomer->ID,
-            $newCustomer->firstName,
-            $newCustomer->lastName,
-            $newCustomer->email,
-            $newCustomer->phoneNumber
+            $customerRow['ID'],
+            $customerRow['firstName'],
+            $customerRow['lastName'],
+            $customerRow['email'],
+            $customerRow['phoneNumber']
         );
     }
 
