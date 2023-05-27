@@ -32,7 +32,16 @@ class Login {
         if (response.success) {
           window.location.href = "/hw1/profile";
         } else {
-          if (response.mailError) {
+          if (response.errorFields) {
+            const errorFields = response.errorFields;
+            for (const fieldName in errorFields) {
+              const errorMessage = errorFields[fieldName];
+              const input = document.querySelector(
+                `input[name="${fieldName}"]`
+              );
+              this.displayError(input.nextElementSibling, errorMessage);
+            }
+          } else if (response.mailError) {
             this.displayError(
               this.emailError,
               "Non esiste un accound con questa mail"

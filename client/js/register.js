@@ -63,10 +63,7 @@ class Register {
               const input = document.querySelector(
                 `input[name="${fieldName}"]`
               );
-              this.displayError(
-                input.nextElementSibling,
-                errorFields[fieldName]
-              );
+              this.displayError(input.nextElementSibling, errorMessage);
             }
           } else if (response.customerExists) {
             this.displayError(
