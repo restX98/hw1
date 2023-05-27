@@ -44,6 +44,13 @@ class CustomerMgr {
         }
     }
 
+    public static function logoutCustomer() {
+        $id = Session::get("sessionId");
+        if(isset($id)) {
+            Session::delete("sessionId");
+        }
+    }
+
     public static function getCurrentCustomer() {
         $databaseManager = new DatabaseMgr();
         $id = Session::get("sessionId");
