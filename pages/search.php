@@ -2,6 +2,7 @@
 require_once '../classes/ProductMgr.php';
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/search.css");
+AssetMgr::addJs("/js/product.js");
 ?>
 
 <?php include("../includes/header.php"); ?>
@@ -15,9 +16,10 @@ AssetMgr::addCss("/css/search.css");
         
         foreach ($products as $product) {
             ?>
-            <div class="product">
+            <div class="product" data-product=<?php echo $product->cod; ?> data-name=<?php echo $product->name; ?>
+                 data-price=<?php echo $product->price; ?> data-category=<?php echo $product->category->name; ?> >
                 <a href=<?php echo $product->url; ?>>
-                    <img src=<?php echo "https://picsum.photos/id/$product->id/600"?> alt="<?php echo $product->name; ?>">
+                    <img src=<?php echo $product->image; ?> alt="<?php echo $product->name; ?>">
                 </a>
                 <div class="info">
                     <a href=<?php echo $product->url; ?>>

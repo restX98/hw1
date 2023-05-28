@@ -36,6 +36,7 @@ class DatabaseMgr {
 
             return $customer;
         } catch(mysqli_sql_exception  $ex) {
+            // TODO: Add phoneExists case
             if ($ex->getSQLState() === "45001") {
                 return array("error" => true, "customerExists" => true);
             } else {
@@ -139,7 +140,6 @@ class DatabaseMgr {
         }
     }
 
-
     public function createCategory($categoryName) {
         $query = "CALL CreateCategory('$categoryName')";
 
@@ -220,6 +220,51 @@ class DatabaseMgr {
         mysqli_free_result($result);
 
         return $product;
+    }
+
+    public function createCartItemsContainer($customerId) {
+        try{
+            $customerId = mysqli_real_escape_string($this->connection, $customerId);
+
+            $query = "CALL CreateCartItemsContainer('$customerId')";
+            
+            $result = mysqli_query($this->connection, $query);
+            $containerId = mysqli_fetch_assoc($result);
+            
+            mysqli_free_result($result);
+            mysqli_next_result($this->connection);
+
+            return $containerId;
+        } catch(mysqli_sql_exception  $ex) {
+            if ($ex->getSQLState() === "45005") {
+                return array("error" => true, "customerNotFound" => true);
+            } else {
+                return array("error" => true);
+            }
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
+    }
+
+    public function getItemsContainer($containerId) {
+        try{
+            $containerId = 1; //mysqli_real_escape_string($this->connection, $containerId);
+
+            $query = "CALL GetItemsContainer('$containerId')";
+            
+            $result = mysqli_query($this->connection, $query);
+            $lineItems = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $lineItems[] = $row;
+            }
+
+            mysqli_free_result($result);
+            mysqli_next_result($this->connection);
+
+            return $lineItems;
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
     }
 
     public function addProductToWishlist($customerID, $productID) {

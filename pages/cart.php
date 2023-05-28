@@ -1,40 +1,35 @@
 <?php
+require_once '../classes/BasketMgr.php';
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/cart.css");
+
+$currentBasket = BasketMgr::getCurrentOrNewBasket();
 ?>
 
 <?php include("../includes/header.php"); ?>
 
 <div id="cart">
-  <div class="items">
+    <div class="items">
     <h1>Carrello</h1>
     <ul>
-      <li>
-        <img class="product-image" src="https://picsum.photos/500/" alt="Product 1">
-        <div class="product-details">
-          <h3>Product 1</h3>
-          <p>Prezzo: €10.00</p>
-        </div>
-        <button class="remove-button">
-          <img src="/hw1/client/icons/remove.svg" alt="Logout Icon">
-        </button>
-      </li>
-      <li>
-        <img class="product-image" src="https://picsum.photos/500/" alt="Product 1">
-        <div class="product-details">
-          <h3>Product 1</h3>
-          <p>Prezzo: €10.00</p>
-        </div>
-        <button class="remove-button">
-          <img src="/hw1/client/icons/remove.svg" alt="Logout Icon">
-        </button>
-      </li>
+        <?php foreach ($currentBasket->items as $item) { ?>
+        <li>
+            <img class="product-image" src=<?php echo $item->image; ?> alt=<?php echo $item->name; ?>>
+            <div class="product-details">
+                <h3><?php echo $item->name; ?></h3>
+                <p>Prezzo: <?php echo "€ $item->price x $item->quantity"; ?></p>
+            </div>
+            <button class="remove-button">
+                <img src="/hw1/client/icons/remove.svg" alt="Logout Icon">
+            </button>
+        </li>
+        <?php } ?>
     </ul>
-  </div>
+    </div>
   
-  <div class="summary">
-    <h2>Riepilogo</h2>
-    <p>Totale (2 articoli): €25.00</p>
-    <button class="continue-button">Procedi all'ordine</button>
-  </div>
+    <div class="summary">
+        <h2>Riepilogo</h2>
+        <p>Totale (<?php echo $currentBasket->totalQuantity ?> articoli): <?php echo "€ $currentBasket->totalPrice"; ?></p>
+        <button class="continue-button">Procedi all'ordine</button>
+    </div>
 </div>

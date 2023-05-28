@@ -196,6 +196,82 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE CreateCartItemsContainer(
+  IN customerId INT
+)
+BEGIN
+  DECLARE containerCount INT;
+  
+  SELECT COUNT(*) INTO containerCount
+  FROM Customers
+  WHERE ID = customerId;
+  
+  IF containerCount = 0 THEN
+    SIGNAL SQLSTATE '45005' SET MESSAGE_TEXT = 'Customer does not exist';
+  ELSE
+    SELECT *
+    FROM ItemsContainers
+    WHERE customer = customerId AND status = 'cart'
+    INTO @containerId, @customerId, @creationDate, @status;
+    
+    IF @containerId IS NULL THEN
+      INSERT INTO ItemsContainers (customer, creationDate, status)
+      VALUES (customerId, NOW(), 'cart');
+      
+      SELECT LAST_INSERT_ID() AS containerId, customerId, creationDate, status;
+    ELSE
+      SELECT @containerId AS containerId, @customerId AS customerId, @creationDate AS creationDate, @status AS status;
+    END IF;
+  END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE AddToCart(
+  IN containerId INT,
+  IN productId INT
+)
+BEGIN
+  DECLARE containerStatus ENUM('cart', 'created', 'shipped');
+  DECLARE lineItemCount INT;
+  
+  SELECT status INTO containerStatus
+  FROM ItemsContainers
+  WHERE ID = containerId;
+
+  IF containerStatus <> 'cart' THEN
+    SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'This ItemsContainer is locked';
+  ELSE
+    SELECT COUNT(*) INTO lineItemCount
+    FROM Items
+    WHERE product = productId AND container = containerId;
+    
+    IF lineItemCount > 0 THEN
+      UPDATE Items
+      SET quantity = quantity + 1
+      WHERE product = productId AND container = containerId;
+    ELSE
+      INSERT INTO Items (product, quantity, container)
+      VALUES (productId, 1, containerId);
+    END IF;
+  END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE GetItemsContainer(
+  IN containerId INT
+)
+BEGIN
+  SELECT i.ID AS lineItemId, p.name AS productName, p.price AS productPrice, p.cod AS productCode, c.id AS categoryId, c.name AS categoryName, c.cod AS categoryCode, i.quantity
+  FROM Items i
+  INNER JOIN Products p ON i.product = p.ID
+  INNER JOIN Categories c ON p.category = c.id
+  WHERE i.container = containerId;
+END //
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE AddProductToWishlist(
   IN p_customerId INT,
   IN p_productId INT

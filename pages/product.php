@@ -14,7 +14,7 @@ AssetMgr::addCss("/css/product.css");
             $product = $ProductMgr->getProduct($productId);
                 ?>
                 <div class="image">
-                        <img src=<?php echo "https://picsum.photos/id/$product->id/600"?> alt="<?php echo $product->name; ?>">
+                        <img src=<?php echo $product->image; ?> alt="<?php echo $product->name; ?>">
                 </div>
                 <div class="detail">
                     <h1 class="name"><?php echo $product->name; ?></h1>

@@ -9,6 +9,7 @@ class Product {
     public $name;
     public $price;
     public $category;
+    public $image;
     public $url;
 
     public function __construct($id, $cod, $name, $price, $category) {
@@ -17,6 +18,7 @@ class Product {
       $this->name = $name;
       $this->price = $price;
       $this->category = $category;
+      $this->image = "https://picsum.photos/id/$id/600";
       $this->url = "/hw1/product/$cod";
     }
 }
