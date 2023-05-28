@@ -6,6 +6,8 @@ class Product {
     this.category = productElement.dataset.category;
 
     this.addToCartButton = productElement.querySelector(".add-to-cart");
+    this.removeFromCartButton =
+      productElement.querySelector(".remove-from-cart");
     // this.addToWishlistButton = null;
 
     this.manager = manager;
@@ -29,6 +31,37 @@ class Product {
           const updateMiniCartEvent = new CustomEvent("cart:updateMiniCart", {
             detail: {
               quantity: response.totalQuantity,
+            },
+          });
+
+          window.dispatchEvent(updateMiniCartEvent);
+        } else {
+          this.manager.displayError("Ops, qualcosa è andato storto.");
+        }
+      })
+      .catch(() => {
+        this.manager.displayError("Ops, qualcosa è andato storto.");
+      });
+  }
+
+  handleRemoveFromCart() {
+    this.manager.clearErrors();
+
+    fetch("/hw1/api/removeFromCart-api.php", {
+      method: "POST",
+      body: JSON.stringify({ cod: this.cod }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          const updateMiniCartEvent = new CustomEvent("cart:updateCart", {
+            detail: {
+              totalQuantity: response.totalQuantity,
+              totalPrice: response.totalPrice,
+              items: response.items,
             },
           });
 
@@ -75,6 +108,12 @@ class Product {
         this.handleAddToCart()
       );
     }
+    if (this.removeFromCartButton) {
+      this.removeFromCartButton.addEventListener("click", () =>
+        this.handleRemoveFromCart()
+      );
+    }
+
     /* if (this.addToWishlistButton) {
       this.addToWishlistButton.addEventListener(
         "click",
@@ -90,6 +129,20 @@ class ProductPageManager {
 
     this.errorContainer = document.getElementById("server-error");
 
+    this.buildProduct();
+
+    this.initEventHandlers();
+  }
+
+  initEventHandlers() {
+    window.addEventListener(
+      "product:buildProduct",
+      this.buildProduct.bind(this)
+    );
+  }
+
+  buildProduct() {
+    this.products = [];
     const productElements = document.querySelectorAll("[data-product]");
     for (let i = 0; i < productElements.length; i++) {
       const product = new Product(productElements[i], this);

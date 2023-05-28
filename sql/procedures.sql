@@ -268,6 +268,51 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE RemoveProductFromCart(
+  IN containerId INT,
+  IN productCod VARCHAR(50)
+)
+BEGIN
+  DECLARE containerStatus ENUM('cart', 'created', 'shipped');
+  DECLARE lineItemCount INT;
+  DECLARE productId INT;
+
+  SELECT status INTO containerStatus
+  FROM ItemsContainers
+  WHERE ID = containerId;
+
+  IF containerStatus <> 'cart' THEN
+    SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'This ItemsContainer is locked';
+  ELSE
+    SELECT id INTO productId
+    FROM Products
+    WHERE cod = productCod;
+
+    IF productId IS NOT NULL THEN
+      SELECT COUNT(*) INTO lineItemCount
+      FROM Items
+      WHERE product = productId AND container = containerId;
+
+      IF lineItemCount > 0 THEN
+        UPDATE Items
+        SET quantity = quantity - 1
+        WHERE product = productId AND container = containerId;
+
+        IF (SELECT quantity FROM Items WHERE product = productId AND container = containerId) = 0 THEN
+          DELETE FROM Items
+          WHERE product = productId AND container = containerId;
+        END IF;
+      ELSE
+        SIGNAL SQLSTATE '45008' SET MESSAGE_TEXT = 'Product does not exist in the cart';
+      END IF;
+    ELSE
+      SIGNAL SQLSTATE '45007' SET MESSAGE_TEXT = 'Product does not exist';
+    END IF;
+  END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE GetItemsContainer(
   IN containerId INT
 )

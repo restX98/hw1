@@ -19,4 +19,17 @@ class Basket extends ItemsContainer {
         
         return $result;
     }
+
+    public function removeProduct($productCod) {
+        $databaseManager = new DatabaseMgr();
+        
+        $result = $databaseManager->removeProductFromCart($this->id, $productCod);
+        if (isset($result['error']) && $result['error'] === true) {
+            throw new Exception("Database error.");
+        }
+
+        BasketMgr::updateBasket($this);
+        
+        return $result;
+    }
 }

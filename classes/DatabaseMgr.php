@@ -289,6 +289,28 @@ class DatabaseMgr {
         }
     }
 
+    public function removeProductFromCart($containerId, $productId) {
+        try{
+            $containerId = mysqli_real_escape_string($this->connection, $containerId);
+
+            $query = "CALL RemoveProductFromCart('$containerId', '$productId')";
+            
+            $result = mysqli_query($this->connection, $query);
+            
+            return array("error" => false);
+        } catch(mysqli_sql_exception  $ex) {
+            if ($ex->getSQLState() === "45006") {
+                return array("error" => true, "lockedContainer" => true);
+            } else if ($ex->getSQLState() === "45007") {
+                return array("error" => true, "productNotFound" => true);
+            } else {
+                return array("error" => true);
+            }
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
+    }
+
     public function addProductToWishlist($customerID, $productID) {
         $customerID = mysqli_real_escape_string($this->connection, $customerID);
         $productID = mysqli_real_escape_string($this->connection, $productID);

@@ -23,7 +23,7 @@
   padding: 0;
 }
 
-#cart .items li {
+#cart .items li.product{
   display: flex; /* Mette in linea il div product-details */
   align-items: center;
   margin-bottom: 10px;
@@ -44,7 +44,7 @@
   margin: 0;
 }
 
-#cart .remove-button {
+#cart .remove-from-cart {
   width: 30px;
   height: 30px;
   background-color: #007bff;
@@ -58,7 +58,7 @@
   cursor: pointer;
 }
 
-#cart .remove-button img {
+#cart .remove-from-cart img {
   width: 100%;
 }
 
