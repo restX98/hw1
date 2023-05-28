@@ -27,14 +27,14 @@ header .logo a {
   text-decoration: none;
 }
 
-header .search-bar {
+header .separator {
   margin-left: 20px;
   flex: 1 1 auto;
   position: relative;
   max-width: 960px;
 }
 
-header .search-bar input[type="text"] {
+header .separator input[type="text"] {
   padding-left: 10px;
   padding-right: 70px;
   border: none;
@@ -44,7 +44,7 @@ header .search-bar input[type="text"] {
   border-radius: 8px;
 }
 
-header .search-bar button[type="submit"] {
+header .separator button[type="submit"] {
   padding: 5px 10px;
   border: none;
   position: absolute;
@@ -57,20 +57,17 @@ header .search-bar button[type="submit"] {
   background-color: #fcbb6a;
 }
 
-header .cart,
-header .user {
+header .icon {
   display: inline-block;
   margin-left: 20px;
 }
 
-header .cart a ,
-header .user a {
+header .icon a {
   text-decoration: none;
   color: #333;
 }
 
-header .cart a img,
-header .user a img {
+header .icon a img {
   width: 24px;
   height: 24px;
   margin-right: 5px;
@@ -108,7 +105,7 @@ header .categories li a {
 }
 
 @media (max-width: 600px) {
-  header .search-bar {
+  header .separator {
     flex-basis: 100%; /* Larghezza al 100% per gli elementi in una riga separata */
     order: 1;
   }

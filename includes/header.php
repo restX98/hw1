@@ -8,20 +8,23 @@
     <div class="top-bar">
         <div class="container">
             <div class="logo">
-                <a href="#">Logo</a>
+                <a href="/hw1">Logo</a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button type="submit">Search</button>
+            <div class="separator">
             </div>
-            <div class="user">
+            <div class="user icon">
                 <a href="/hw1/profile">
                     <img src="/hw1/client/icons/user.svg" alt="User Icon">
                 </a>
             </div>
-            <div class="cart">
+            <div class="cart icon">
                 <a href="#">
                     <img src="/hw1/client/icons/cart.svg" alt="Cart Icon">
+                </a>
+            </div>
+            <div class="logout icon">
+                <a href="/hw1/logout">
+                    <img src="/hw1/client/icons/logout.svg" alt="Logout Icon">
                 </a>
             </div>
         </div>
