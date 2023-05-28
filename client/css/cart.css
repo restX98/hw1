@@ -74,6 +74,8 @@
 }
 
 #cart .continue-button {
+  text-align: center;
+  display: block;
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -81,6 +83,12 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+#cart .continue-button.disabled {
+  cursor: default;
+  pointer-events: none;
+  background-color: #007bff6c;
 }
 
 @media (max-width: 768px) {

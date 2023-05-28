@@ -2,6 +2,7 @@ class Cart {
   constructor() {
     this.totalQuantityElement = document.querySelector(".total-quantity");
     this.totalPriceElement = document.querySelector(".total-price");
+    this.totalPriceElement = document.querySelector(".continue-button");
 
     this.cartItemsContainer = document.querySelector(".items ul");
 
@@ -22,6 +23,7 @@ class Cart {
   updateSummary(totalQuantity, totalPrice) {
     this.totalQuantityElement.textContent = totalQuantity;
     this.totalPriceElement.textContent = `€ ${totalPrice}`;
+    this.totalPriceElement.setAttribute("disabled", totalPrice === 0);
   }
 
   updateItemsList(items) {

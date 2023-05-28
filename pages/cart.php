@@ -41,6 +41,8 @@ $currentBasket = BasketMgr::getCurrentBasket();
             Totale (<span class="total-quantity"><?php echo $currentBasket->totalQuantity ?></span>
             articoli): <span class="total-price"><?php echo "€ $currentBasket->totalPrice"; ?></span>
         </p>
-        <button class="continue-button">Procedi all'ordine</button>
+        <a href="/hw1/checkout" class="continue-button <?php echo $currentBasket->totalPrice > 0 ? "" : "disabled"?>" >
+            Procedi all'ordine
+        </a>
     </div>
 </div>
