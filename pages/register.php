@@ -42,7 +42,7 @@ if ($currentCustomer !== null) {
         <button type="submit">Registrati</button>
 
         <div class="login-link">
-            <p>Hai già un account? Effettua il <a href="/login">login</a></p>
+            <p>Hai già un account? Effettua il <a href="/hw1/login">login</a></p>
         </div>
     </form>
   </div>

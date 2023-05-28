@@ -294,14 +294,8 @@ BEGIN
       WHERE product = productId AND container = containerId;
 
       IF lineItemCount > 0 THEN
-        UPDATE Items
-        SET quantity = quantity - 1
+        DELETE FROM Items
         WHERE product = productId AND container = containerId;
-
-        IF (SELECT quantity FROM Items WHERE product = productId AND container = containerId) = 0 THEN
-          DELETE FROM Items
-          WHERE product = productId AND container = containerId;
-        END IF;
       ELSE
         SIGNAL SQLSTATE '45008' SET MESSAGE_TEXT = 'Product does not exist in the cart';
       END IF;
