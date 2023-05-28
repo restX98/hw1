@@ -33,10 +33,13 @@ CREATE TABLE ItemsContainers (
   customer INT NOT NULL,
   creationDate DATETIME NOT NULL,
   status ENUM('cart', 'created', 'shipped') NOT NULL DEFAULT 'cart',
+  address INT,
 
   INDEX idx_customer(customer),
+  INDEX idx_address(address),
 
-  FOREIGN KEY (customer) REFERENCES Customers(ID)
+  FOREIGN KEY (customer) REFERENCES Customers(ID),
+  FOREIGN KEY (address) REFERENCES Addresses(ID)
 )Engine="InnoDB";
 
 CREATE TABLE Items (
