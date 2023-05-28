@@ -1,4 +1,5 @@
 <?php
+require_once 'BasketMgr.php';
 require_once 'ItemsContainer.php';
 
 class Basket extends ItemsContainer {
@@ -13,6 +14,9 @@ class Basket extends ItemsContainer {
         if (isset($result['error']) && $result['error'] === true) {
             throw new Exception("Database error.");
         }
+
+        BasketMgr::updateBasket($this);
+        
         return $result;
     }
 }

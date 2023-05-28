@@ -1,6 +1,10 @@
 <?php
+    require_once '../classes/BasketMgr.php';
     require_once '../classes/AssetMgr.php';
     AssetMgr::addCss("/css/header.css");
+    AssetMgr::addJs("/js/miniCart.js");
+
+    $currentBasket = BasketMgr::getCurrentBasket();
 ?>
 
 <?php include("head.php"); ?>
@@ -17,7 +21,7 @@
                     <img src="/hw1/client/icons/user.svg" alt="User Icon">
                 </a>
             </div>
-            <div class="cart icon">
+            <div class="cart icon" data-quantity=<?php echo $currentBasket->totalQuantity ?> >
                 <a href="/hw1/cart">
                     <img src="/hw1/client/icons/cart.svg" alt="Cart Icon">
                 </a>

@@ -3,7 +3,7 @@ require_once '../classes/BasketMgr.php';
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/cart.css");
 
-$currentBasket = BasketMgr::getCurrentOrNewBasket();
+$currentBasket = BasketMgr::getCurrentBasket();
 ?>
 
 <?php include("../includes/header.php"); ?>

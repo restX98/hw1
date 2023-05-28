@@ -56,7 +56,7 @@
   vertical-align: super;
 }
 
-#search .product .add-button {
+#search .product .add-to-cart {
   width: 30px;
   height: 30px;
   background-color: #007bff;
@@ -71,6 +71,6 @@
   float: right;
 }
 
-#search .product .add-button img {
+#search .product .add-to-cart img {
   width: 100%;
 }

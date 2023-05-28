@@ -15,11 +15,11 @@ if(isset($data['cod']) && empty($data['cod'])) {
     $product = $data['cod'];
 }
 
-$currentBasket = BasketMgr::getCurrentOrNewBasket();
+$currentBasket = BasketMgr::getCurrentBasket();
 
 $currentBasket->addProduct($product);
 
-$response = array('success' => true);
+$response = array('success' => true, 'totalQuantity' => $currentBasket->totalQuantity);
 
 header('Content-Type: application/json');
 echo json_encode($response);

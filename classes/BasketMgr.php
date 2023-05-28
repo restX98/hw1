@@ -7,7 +7,7 @@ require_once 'Session.php';
 require_once 'Exceptions.php';
 
 class BasketMgr {
-    public static function getCurrentOrNewBasket() {
+    public static function getCurrentBasket() {
         $databaseManager = new DatabaseMgr();
         $id = Session::get("sessionId");
         if(isset($id)) {
@@ -23,23 +23,7 @@ class BasketMgr {
 
             $itemsRow = $databaseManager->getItemsContainer($basket['containerId']);
 
-            $lineItem = array();
-            foreach ($itemsRow as $row) {
-                $category = new Category(
-                    $row['categoryId'],
-                    $row['categoryName'],
-                    $row['categoryCode']
-                );
-
-                $lineItem[] = new LineItem(
-                    $row['lineItemId'],
-                    $row['productCode'],
-                    $row['productName'],
-                    $row['productPrice'],
-                    $category,
-                    $row['quantity']
-                );
-            }
+            $lineItem = self::getLineItems($itemsRow);
 
             return new Basket(
                 $basket['containerId'],
@@ -50,6 +34,39 @@ class BasketMgr {
             return throw new CustomerNotAuthenticatedException();
         }
     }
+
+    public static function updateBasket($basket) {
+        $databaseManager = new DatabaseMgr();
+        $itemsRow = $databaseManager->getItemsContainer($basket->id);
+
+        $lineItems = self::getLineItems($itemsRow);
+
+        $basket->setItems($lineItems);
+        $basket->calculateTotalQuantity();
+        $basket->calculateTotalPrice();
+    }
+
+    private static function getLineItems($itemsRow) {
+        $lineItem = array();
+        foreach ($itemsRow as $row) {
+            $category = new Category(
+                $row['categoryId'],
+                $row['categoryName'],
+                $row['categoryCode']
+            );
+
+            $lineItem[] = new LineItem(
+                $row['lineItemId'],
+                $row['productCode'],
+                $row['productName'],
+                $row['productPrice'],
+                $category,
+                $row['quantity']
+            );
+        }
+        return $lineItem;
+    }
+
 }
 
 ?>

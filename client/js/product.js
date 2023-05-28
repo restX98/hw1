@@ -26,8 +26,13 @@ class Product {
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          // TODO: Update minicart
-          console.log("Prodotto aggiunto al carrello con successo.");
+          const updateMiniCartEvent = new CustomEvent("cart:updateMiniCart", {
+            detail: {
+              quantity: response.totalQuantity,
+            },
+          });
+
+          window.dispatchEvent(updateMiniCartEvent);
         } else {
           this.manager.displayError("Ops, qualcosa è andato storto.");
         }
@@ -76,14 +81,6 @@ class Product {
         this.handleAddToWishlist.bind(this)
       );
     } */
-  }
-
-  displayError(element, message) {
-    element.textContent = message;
-  }
-
-  clearErrors() {
-    this.serverError.textContent = "";
   }
 }
 
