@@ -13,8 +13,8 @@ class BasketMgr {
         if(isset($id)) {
             $basket = $databaseManager->createCartItemsContainer($id);
 
-            if (isset($customerRow['error']) && $customerRow['error'] === true) {
-                if ($customerRow['customerNotFound'] === true) {
+            if (isset($basket['error']) && $basket['error'] === true) {
+                if (isset($basket['customerNotFound']) &&  $basket['customerNotFound'] === true) {
                     throw new CustomerNotFoundException("Email non valida.");
                 } else {
                     throw new Exception("Database error.");

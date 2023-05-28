@@ -212,7 +212,7 @@ BEGIN
     SELECT *
     FROM ItemsContainers
     WHERE customer = customerId AND status = 'cart'
-    INTO @containerId, @customerId, @creationDate, @status;
+    INTO @containerId, @customerId, @creationDate, @status, @address;
     
     IF @containerId IS NULL THEN
       INSERT INTO ItemsContainers (customer, creationDate, status)
@@ -220,7 +220,7 @@ BEGIN
       
       SELECT LAST_INSERT_ID() AS containerId, customerId, creationDate, status;
     ELSE
-      SELECT @containerId AS containerId, @customerId AS customerId, @creationDate AS creationDate, @status AS status;
+      SELECT @containerId AS containerId, @customerId AS customerId, @creationDate AS creationDate, @status AS status, @address as addressId;
     END IF;
   END IF;
 END //
