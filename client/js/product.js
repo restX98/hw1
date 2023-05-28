@@ -1,36 +1,39 @@
 class Product {
-  constructor(productElement) {
+  constructor(productElement, manager) {
     this.cod = productElement.dataset.product;
     this.name = productElement.dataset.name;
     this.price = productElement.dataset.price;
     this.category = productElement.dataset.category;
 
-    this.addToCartButton = productElement.querySelector(".add-button");
+    this.addToCartButton = productElement.querySelector(".add-to-cart");
     // this.addToWishlistButton = null;
+
+    this.manager = manager;
 
     this.initEventHandlers();
   }
 
   handleAddToCart() {
-    fetch("/api/addToCart-api.php", {
+    this.manager.clearErrors();
+
+    fetch("/hw1/api/addToCart-api.php", {
       method: "POST",
       body: JSON.stringify({ cod: this.cod }),
       headers: {
         "Content-Type": "application/json",
       },
     })
+      .then((response) => response.json())
       .then((response) => {
-        if (response.ok) {
+        if (response.success) {
+          // TODO: Update minicart
           console.log("Prodotto aggiunto al carrello con successo.");
         } else {
-          console.error("Errore durante l'aggiunta del prodotto al carrello.");
+          this.manager.displayError("Ops, qualcosa è andato storto.");
         }
       })
-      .catch((error) => {
-        console.error(
-          "Si è verificato un errore durante la chiamata Fetch:",
-          error
-        );
+      .catch(() => {
+        this.manager.displayError("Ops, qualcosa è andato storto.");
       });
   }
 
@@ -63,7 +66,9 @@ class Product {
 
   initEventHandlers() {
     if (this.addToCartButton) {
-      this.addToCartButton.addEventListener("click", this.handleAddToCart);
+      this.addToCartButton.addEventListener("click", () =>
+        this.handleAddToCart()
+      );
     }
     /* if (this.addToWishlistButton) {
       this.addToWishlistButton.addEventListener(
@@ -72,19 +77,35 @@ class Product {
       );
     } */
   }
+
+  displayError(element, message) {
+    element.textContent = message;
+  }
+
+  clearErrors() {
+    this.serverError.textContent = "";
+  }
 }
 
 class ProductPageManager {
   constructor() {
-    this.productContainer = document.getElementById("search");
     this.products = [];
 
-    const productElements =
-      this.productContainer.querySelectorAll("[data-product]");
+    this.errorContainer = document.getElementById("server-error");
+
+    const productElements = document.querySelectorAll("[data-product]");
     for (let i = 0; i < productElements.length; i++) {
-      const product = new Product(productElements[i]);
+      const product = new Product(productElements[i], this);
       this.products.push(product);
     }
+  }
+
+  displayError(message, element = this.errorContainer) {
+    element.textContent = message;
+  }
+
+  clearErrors(element = this.errorContainer) {
+    element.textContent = "";
   }
 }
 

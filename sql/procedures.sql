@@ -227,13 +227,14 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE AddToCart(
+CREATE PROCEDURE AddProductToCart(
   IN containerId INT,
-  IN productId INT
+  IN productCod VARCHAR(50)
 )
 BEGIN
   DECLARE containerStatus ENUM('cart', 'created', 'shipped');
   DECLARE lineItemCount INT;
+  DECLARE productId INT;
   
   SELECT status INTO containerStatus
   FROM ItemsContainers
@@ -242,17 +243,25 @@ BEGIN
   IF containerStatus <> 'cart' THEN
     SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'This ItemsContainer is locked';
   ELSE
-    SELECT COUNT(*) INTO lineItemCount
-    FROM Items
-    WHERE product = productId AND container = containerId;
+    SELECT id INTO productId
+    FROM Products
+    WHERE cod = productCod;
     
-    IF lineItemCount > 0 THEN
-      UPDATE Items
-      SET quantity = quantity + 1
+    IF productId IS NOT NULL THEN
+      SELECT COUNT(*) INTO lineItemCount
+      FROM Items
       WHERE product = productId AND container = containerId;
+      
+      IF lineItemCount > 0 THEN
+        UPDATE Items
+        SET quantity = quantity + 1
+        WHERE product = productId AND container = containerId;
+      ELSE
+        INSERT INTO Items (product, quantity, container)
+        VALUES (productId, 1, containerId);
+      END IF;
     ELSE
-      INSERT INTO Items (product, quantity, container)
-      VALUES (productId, 1, containerId);
+      SIGNAL SQLSTATE '45007' SET MESSAGE_TEXT = 'Product does not exist';
     END IF;
   END IF;
 END //

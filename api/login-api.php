@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     throw new Exception();
 }
 
-$data = $data = json_decode(file_get_contents('php://input'), true);
+$data = json_decode(file_get_contents('php://input'), true);
 
 $invalidFields = [];
 
@@ -40,7 +40,6 @@ if (!empty($invalidFields)) {
         $response = array('success' => false, 'passwordError' => true);
     }
 }
-
 
 header('Content-Type: application/json');
 echo json_encode($response);

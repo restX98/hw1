@@ -7,6 +7,8 @@ AssetMgr::addJs("/js/product.js");
 
 <?php include("../includes/header.php"); ?>
 
+<div id="server-error" class="error-message server-error"></div>
+
 <div id="search">
     <?php
     if (isset($_GET['category'])) {
@@ -17,7 +19,7 @@ AssetMgr::addJs("/js/product.js");
         foreach ($products as $product) {
             ?>
             <div class="product" data-product=<?php echo $product->cod; ?> data-name=<?php echo $product->name; ?>
-                 data-price=<?php echo $product->price; ?> data-category=<?php echo $product->category->name; ?> >
+                 data-price=<?php echo $product->price; ?> data-category=<?php echo $product->category->cod; ?> >
                 <a href=<?php echo $product->url; ?>>
                     <img src=<?php echo $product->image; ?> alt="<?php echo $product->name; ?>">
                 </a>
@@ -33,7 +35,7 @@ AssetMgr::addJs("/js/product.js");
                         &#8226;
                         <span class="category"><?php echo $product->category->name; ?></span>
                     </div>
-                    <button class="add-button">
+                    <button class="add-to-cart">
                         <img src="/hw1/client/icons/add.svg" alt="Logout Icon">
                     </button>
                 </div>

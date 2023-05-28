@@ -248,7 +248,7 @@ class DatabaseMgr {
 
     public function getItemsContainer($containerId) {
         try{
-            $containerId = 1; //mysqli_real_escape_string($this->connection, $containerId);
+            $containerId = mysqli_real_escape_string($this->connection, $containerId);
 
             $query = "CALL GetItemsContainer('$containerId')";
             
@@ -262,6 +262,28 @@ class DatabaseMgr {
             mysqli_next_result($this->connection);
 
             return $lineItems;
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
+    }
+
+    public function AddProductToCart($containerId, $productId) {
+        try{
+            $containerId = mysqli_real_escape_string($this->connection, $containerId);
+
+            $query = "CALL AddProductToCart('$containerId', '$productId')";
+            
+            $result = mysqli_query($this->connection, $query);
+            
+            return array("error" => false);
+        } catch(mysqli_sql_exception  $ex) {
+            if ($ex->getSQLState() === "45006") {
+                return array("error" => true, "lockedContainer" => true);
+            } else if ($ex->getSQLState() === "45007") {
+                return array("error" => true, "productNotFound" => true);
+            } else {
+                return array("error" => true);
+            }
         } catch(Exception $ex) {
             return array("error" => true);
         }

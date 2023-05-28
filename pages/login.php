@@ -8,7 +8,7 @@ $customerMgr = new CustomerMgr();
 $currentCustomer = $customerMgr::getCurrentCustomer();
 
 if ($currentCustomer !== null) {
-    header("Location: profile"); // Sostituisci "home.php" con il percorso corretto per la home
+    header("Location: profile");
     exit();
 }
 ?>

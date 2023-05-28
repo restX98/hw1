@@ -12,6 +12,10 @@ class ProductMgr {
 
     public function getProduct($cod) {
         $productRow = $this->databaseManager->getProduct($cod);
+        if(is_null($productRow)){
+            return null;
+        }
+        
         $category = new Category(
             $productRow->category,
             $productRow->categoryName,
