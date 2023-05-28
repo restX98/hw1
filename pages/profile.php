@@ -44,10 +44,15 @@ if ($customer === null) {
 
   <div class="addresses">
     <h2>Indirizzi</h2>
+    <?php
+      $addresses = $customer->getAddresses();
+    ?>
     <ul class="address-list">
-      <li>Indirizzo 1</li>
-      <li>Indirizzo 2</li>
-      <li>Indirizzo 3</li>
+    <?php
+      foreach ($addresses as $address) {
+          echo '<li>' . $address->toString() . '</li>';
+      } 
+    ?>
     </ul>
   </div>
 </div>

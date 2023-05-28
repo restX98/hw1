@@ -20,5 +20,10 @@ class Address {
         $this->province = $province;
         $this->country = $country;
     }
+
+    public function toString() {
+        return "$this->street $this->houseNumber, $this->postalCode - "
+            . "$this->postalCode, $this->city($this->province) - $this->country";
+    }
 }
 ?>

@@ -50,7 +50,7 @@ class Checkout {
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          window.location.href = "/hw1/order/" + response.orderNo;
+          window.location.href = "/hw1/home";
         } else {
           if (response.errorFields) {
             const errorFields = response.errorFields;
