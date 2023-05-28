@@ -36,9 +36,10 @@ class DatabaseMgr {
 
             return $customer;
         } catch(mysqli_sql_exception  $ex) {
-            // TODO: Add phoneExists case
             if ($ex->getSQLState() === "45001") {
-                return array("error" => true, "customerExists" => true);
+                return array("error" => true, "emailExists" => true);
+            } else if ($ex->getSQLState() === "45002") {
+                return array("error" => true, "phoneExists" => true);
             } else {
                 return array("error" => true);
             }

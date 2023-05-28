@@ -65,10 +65,15 @@ class Register {
               );
               this.displayError(input.nextElementSibling, errorMessage);
             }
-          } else if (response.customerExists) {
+          } else if (response.emailExists) {
             this.displayError(
               this.emailError,
               "Questa mail è già stata registrata, effettua il login."
+            );
+          } else if (response.phoneExists) {
+            this.displayError(
+              this.phoneError,
+              "Questo numero di telefono è già stata registrato, effettua il login."
             );
           } else {
             this.displayError(

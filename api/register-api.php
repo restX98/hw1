@@ -62,8 +62,10 @@ if (!empty($invalidFields)) {
             $phone
         );
         $response = array('success' => true);
-    } catch(CustomerExistsException $ex) {
-        $response = array('success' => false, 'customerExists' => true);
+    } catch(EmailExistsException $ex) {
+        $response = array('success' => false, 'emailExists' => true);
+    } catch(PhoneExistsException $ex) {
+        $response = array('success' => false, 'phoneExists' => true);
     }
 }
 

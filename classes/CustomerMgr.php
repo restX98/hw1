@@ -11,8 +11,10 @@ class CustomerMgr {
         $customerRow = $databaseManager->createCustomer($firstName, $lastName, $email, $psw, $phoneNumber);
         
         if (isset($customerRow['error']) && $customerRow['error'] === true) {
-            if ($customerRow['customerExists'] === true) {
-                throw new CustomerExistsException("Questa mail è già registrata.");
+            if (isset($customerRow['emailExists']) && $customerRow['emailExists'] === true) {
+                throw new EmailExistsException("Questa mail è già registrata.");
+            } else if (isset($customerRow['phoneExists']) && $customerRow['phoneExists'] === true) {
+                throw new PhoneExistsException("Questo numero di telefono è già registrato.");
             } else {
                 throw new Exception("Database error.");
             }
