@@ -18,7 +18,7 @@
                 </a>
             </div>
             <div class="cart icon">
-                <a href="#">
+                <a href="/hw1/cart">
                     <img src="/hw1/client/icons/cart.svg" alt="Cart Icon">
                 </a>
             </div>

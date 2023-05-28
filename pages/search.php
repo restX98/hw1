@@ -31,6 +31,9 @@ AssetMgr::addCss("/css/search.css");
                         &#8226;
                         <span class="category"><?php echo $product->category->name; ?></span>
                     </div>
+                    <button class="add-button">
+                        <img src="/hw1/client/icons/add.svg" alt="Logout Icon">
+                    </button>
                 </div>
             </div>
             <?php

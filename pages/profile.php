@@ -12,7 +12,7 @@ if ($customer === null) {
 
 <?php include("../includes/header.php"); ?>
 
-<div class="profile">
+<div id="profile">
   <div class="personal-info">
     <h2>Dati personali</h2>
     <div class="info-row">
