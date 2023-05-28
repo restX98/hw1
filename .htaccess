@@ -6,6 +6,7 @@ RewriteRule ^logout$ pages/logout.php [L]
 RewriteRule ^profile$ pages/profile.php [L]
 RewriteRule ^signin$ pages/register.php [L]
 RewriteRule ^cart$ pages/cart.php [L]
+RewriteRule ^checkout$ pages/checkout.php [L]
 
 RewriteRule ^category/([a-zA-Z0-9-_]+)$ pages/search.php?category=$1 [L]
 RewriteRule ^product/([a-zA-Z0-9-_]+)$ pages/product.php?id=$1 [L]
