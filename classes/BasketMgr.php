@@ -21,13 +21,13 @@ class BasketMgr {
                 }
             }
 
+
             $itemsRow = $databaseManager->getItemsContainer($basket['containerId']);
 
             $lineItem = self::getLineItems($itemsRow);
 
             return new Basket(
                 $basket['containerId'],
-                $basket['creationDate'],
                 $lineItem
             );
         } else {
@@ -66,7 +66,6 @@ class BasketMgr {
         }
         return $lineItem;
     }
-
 }
 
 ?>

@@ -28,10 +28,24 @@ CREATE TABLE Customers (
   phoneNumber VARCHAR(20) UNIQUE NOT NULL
 )Engine="InnoDB";
 
+CREATE TABLE Addresses (
+  ID INT PRIMARY KEY AUTO_INCREMENT,
+  street VARCHAR(255) NOT NULL,
+  houseNumber VARCHAR(10) NOT NULL,
+  postalCode VARCHAR(10) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  province VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  customer INT NOT NULL,
+
+  INDEX idx_customer(customer),
+  
+  FOREIGN KEY (customer) REFERENCES Customers(ID)
+)Engine="InnoDB";
+
 CREATE TABLE ItemsContainers (
   ID INT PRIMARY KEY AUTO_INCREMENT,
   customer INT NOT NULL,
-  creationDate DATETIME NOT NULL,
   status ENUM('cart', 'created', 'shipped') NOT NULL DEFAULT 'cart',
   address INT,
 
@@ -53,21 +67,6 @@ CREATE TABLE Items (
 
   FOREIGN KEY (product) REFERENCES Products(ID),
   FOREIGN KEY (container) REFERENCES ItemsContainers(ID)
-)Engine="InnoDB";
-
-CREATE TABLE Addresses (
-  ID INT PRIMARY KEY AUTO_INCREMENT,
-  street VARCHAR(255) NOT NULL,
-  houseNumber VARCHAR(10) NOT NULL,
-  postalCode VARCHAR(10) NOT NULL,
-  city VARCHAR(255) NOT NULL,
-  province VARCHAR(255) NOT NULL,
-  country VARCHAR(255) NOT NULL,
-  customer INT NOT NULL,
-
-  INDEX idx_customer(customer),
-  
-  FOREIGN KEY (customer) REFERENCES Customers(ID)
 )Engine="InnoDB";
 
 CREATE TABLE Wishlists (

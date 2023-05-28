@@ -26,12 +26,12 @@ class Checkout {
       return;
     }
 
-    const streetInput = this.streetInput.ariaValueMax.trim();
-    const houseNumberInput = this.houseNumberInput.ariaValueMax.trim();
-    const postalCodeInput = this.postalCodeInput.ariaValueMax.trim();
-    const cityInput = this.cityInput.ariaValueMax.trim();
-    const provinceInput = this.provinceInput.ariaValueMax.trim();
-    const countryInput = this.countryInput.ariaValueMax.trim();
+    const street = this.streetInput.value.trim();
+    const houseNumber = this.houseNumberInput.value.trim();
+    const postalCode = this.postalCodeInput.value.trim();
+    const city = this.cityInput.value.trim();
+    const province = this.provinceInput.value.trim();
+    const country = this.countryInput.value.trim();
 
     fetch("/hw1/api/placeOrder-api.php", {
       method: "POST",
@@ -39,18 +39,18 @@ class Checkout {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        streetInput,
-        houseNumberInput,
-        postalCodeInput,
-        cityInput,
-        provinceInput,
-        countryInput,
+        street,
+        houseNumber,
+        postalCode,
+        city,
+        province,
+        country,
       }),
     })
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          window.location.href = "/hw1/profile";
+          window.location.href = "/hw1/order/" + response.orderNo;
         } else {
           if (response.errorFields) {
             const errorFields = response.errorFields;
@@ -94,10 +94,16 @@ class Checkout {
     if (houseNumberInput === "") {
       this.displayError(this.houseNumberError, "Inserisci un numero civico");
       isValid = false;
+    } else if (postalCodeInput.length > 10) {
+      this.displayError(this.houseNumberError, "Massimo 10 caratteri");
+      isValid = false;
     }
 
     if (postalCodeInput === "") {
       this.displayError(this.postalCodeError, "Inserisci un codice postale");
+      isValid = false;
+    } else if (postalCodeInput.length > 10) {
+      this.displayError(this.postalCodeError, "Massimo 10 caratteri");
       isValid = false;
     }
 

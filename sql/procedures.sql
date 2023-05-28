@@ -200,27 +200,27 @@ CREATE PROCEDURE CreateCartItemsContainer(
   IN customerId INT
 )
 BEGIN
-  DECLARE containerCount INT;
+  DECLARE customerCount INT;
   
-  SELECT COUNT(*) INTO containerCount
+  SELECT COUNT(*) INTO customerCount
   FROM Customers
   WHERE ID = customerId;
   
-  IF containerCount = 0 THEN
+  IF customerCount = 0 THEN
     SIGNAL SQLSTATE '45005' SET MESSAGE_TEXT = 'Customer does not exist';
   ELSE
     SELECT *
     FROM ItemsContainers
     WHERE customer = customerId AND status = 'cart'
-    INTO @containerId, @customerId, @creationDate, @status, @address;
+    INTO @containerId, @customerId, @status, @address;
     
     IF @containerId IS NULL THEN
-      INSERT INTO ItemsContainers (customer, creationDate, status)
-      VALUES (customerId, NOW(), 'cart');
+      INSERT INTO ItemsContainers (customer, status)
+      VALUES (customerId, 'cart');
       
-      SELECT LAST_INSERT_ID() AS containerId, customerId, creationDate, status;
+      SELECT LAST_INSERT_ID() AS containerId, customerId;
     ELSE
-      SELECT @containerId AS containerId, @customerId AS customerId, @creationDate AS creationDate, @status AS status, @address as addressId;
+      SELECT @containerId AS containerId, @customerId AS customerId, @status AS status, @address as addressId;
     END IF;
   END IF;
 END //
@@ -318,6 +318,50 @@ BEGIN
   WHERE i.container = containerId;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE PlaceOrder(
+  IN containerId INT,
+  IN addressId INT
+)
+BEGIN
+  DECLARE itemCount INT;
+  DECLARE containerStatus ENUM('cart', 'created', 'shipped');
+  
+  SELECT COUNT(*) INTO itemCount
+  FROM ItemsContainers
+  WHERE ID = containerId;
+  
+  IF itemCount = 0 THEN
+    SIGNAL SQLSTATE '45008' SET MESSAGE_TEXT = 'ItemsContainer does not exist';
+  ELSE
+    SELECT status INTO containerStatus
+    FROM ItemsContainers
+    WHERE ID = containerId;
+    
+    IF containerStatus <> 'cart' THEN
+      SIGNAL SQLSTATE '45009' SET MESSAGE_TEXT = 'ItemsContainer is not in cart state';
+    ELSE
+      SELECT COUNT(*) INTO itemCount
+      FROM Addresses
+      WHERE ID = addressId;
+      
+      IF itemCount = 0 THEN
+        SIGNAL SQLSTATE '45010' SET MESSAGE_TEXT = 'Address does not exist';
+      ELSE
+        UPDATE ItemsContainers
+        SET status = 'created', address = addressId
+        WHERE ID = containerId;
+        
+        SELECT *
+        FROM ItemsContainers
+        WHERE ID = containerId;
+      END IF;
+    END IF;
+  END IF;
+END //
+DELIMITER ;
+
 
 DELIMITER //
 CREATE PROCEDURE AddProductToWishlist(

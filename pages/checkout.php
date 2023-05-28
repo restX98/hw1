@@ -5,6 +5,10 @@ AssetMgr::addCss("/css/checkout.css");
 AssetMgr::addJs("/js/checkout.js");
 
 $currentBasket = BasketMgr::getCurrentBasket();
+if ($currentBasket->totalPrice === 0) {
+    header("Location: login");
+    exit();
+}
 ?>
 
 <?php include("../includes/checkoutHeader.php"); ?>

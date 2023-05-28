@@ -2,14 +2,12 @@
 
 class ItemsContainer {
     public $id;
-    public $creationDate;
     public $items;
     public $totalPrice;
     public $totalQuantity;
     
-    public function __construct($id, $creationDate, $items) {
+    public function __construct($id, $items) {
         $this->id = $id;
-        $this->creationDate = $creationDate;
         $this->items = $items;
         $this->calculateTotalPrice();
         $this->calculateTotalQuantity();

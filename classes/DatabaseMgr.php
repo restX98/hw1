@@ -33,6 +33,7 @@ class DatabaseMgr {
             $customer = mysqli_fetch_assoc($result);
             
             mysqli_free_result($result);
+            mysqli_next_result($this->connection);
 
             return $customer;
         } catch(mysqli_sql_exception  $ex) {
@@ -57,6 +58,7 @@ class DatabaseMgr {
 
             $customer = mysqli_fetch_assoc($result);
             mysqli_free_result($result);
+            mysqli_next_result($this->connection);
 
             return $customer;
         } catch(mysqli_sql_exception  $ex) {
@@ -81,6 +83,7 @@ class DatabaseMgr {
             $customer = mysqli_fetch_object($result);
             
             mysqli_free_result($result);
+            mysqli_next_result($this->connection);
 
             return $customer;
         } catch(Exception $ex) {
@@ -102,6 +105,7 @@ class DatabaseMgr {
         $addressId = mysqli_fetch_row($result);
 
         mysqli_free_result($result);
+        mysqli_next_result($this->connection);
         
         return $addressId[0];
     }
@@ -117,6 +121,7 @@ class DatabaseMgr {
         }
 
         mysqli_free_result($result);
+        mysqli_next_result($this->connection);
 
         return $addresses;
     }
@@ -134,6 +139,7 @@ class DatabaseMgr {
             }
 
             mysqli_free_result($result);
+            mysqli_next_result($this->connection);
 
             return $categories;
         } catch(Exception $ex) {
@@ -204,6 +210,7 @@ class DatabaseMgr {
             }
 
             mysqli_free_result($result);
+            mysqli_next_result($this->connection);
 
             return $products;
         } catch(Exception $ex) {
@@ -219,6 +226,7 @@ class DatabaseMgr {
 
         $product = mysqli_fetch_object($result);
         mysqli_free_result($result);
+        mysqli_next_result($this->connection);
 
         return $product;
     }
@@ -275,6 +283,9 @@ class DatabaseMgr {
             $query = "CALL AddProductToCart('$containerId', '$productId')";
             
             $result = mysqli_query($this->connection, $query);
+
+            mysqli_free_result($result);
+            mysqli_next_result($this->connection);
             
             return array("error" => false);
         } catch(mysqli_sql_exception  $ex) {
@@ -298,12 +309,43 @@ class DatabaseMgr {
             
             $result = mysqli_query($this->connection, $query);
             
+            mysqli_free_result($result);
+            mysqli_next_result($this->connection);
+            
             return array("error" => false);
         } catch(mysqli_sql_exception  $ex) {
             if ($ex->getSQLState() === "45006") {
                 return array("error" => true, "lockedContainer" => true);
             } else if ($ex->getSQLState() === "45007") {
                 return array("error" => true, "productNotFound" => true);
+            } else {
+                return array("error" => true);
+            }
+        } catch(Exception $ex) {
+            return array("error" => true);
+        }
+    }
+
+    public function placeOrder($containerId, $addressId) {
+        try{
+            $containerId = mysqli_real_escape_string($this->connection, $containerId);
+
+            $query = "CALL PlaceOrder('$containerId', '$addressId')";
+            
+            $result = mysqli_query($this->connection, $query);
+            
+            $orderRow = mysqli_fetch_assoc($result);
+            mysqli_free_result($result);
+            mysqli_next_result($this->connection);
+
+            return $orderRow;    
+        } catch(mysqli_sql_exception  $ex) {
+            if ($ex->getSQLState() === "45006") {
+                return array("error" => true, "containerNotFound" => true);
+            } else if ($ex->getSQLState() === "45009") {
+                return array("error" => true, "transitionError" => true);
+            } else if ($ex->getSQLState() === "45010") {
+                return array("error" => true, "addressNotFound" => true);
             } else {
                 return array("error" => true);
             }

@@ -3,13 +3,13 @@
 require_once 'DatabaseMgr.php';
 
 class Address {
-    private $id;
-    private $street;
-    private $houseNumber;
-    private $postalCode;
-    private $city;
-    private $province;
-    private $country;
+    public $id;
+    public $street;
+    public $houseNumber;
+    public $postalCode;
+    public $city;
+    public $province;
+    public $country;
 
     public function __construct($id, $street, $houseNumber, $postalCode, $city, $province, $country) {
         $this->id = $id;
