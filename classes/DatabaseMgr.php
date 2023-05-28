@@ -284,7 +284,6 @@ class DatabaseMgr {
             
             $result = mysqli_query($this->connection, $query);
 
-            mysqli_free_result($result);
             mysqli_next_result($this->connection);
             
             return array("error" => false);
@@ -309,9 +308,8 @@ class DatabaseMgr {
             
             $result = mysqli_query($this->connection, $query);
             
-            mysqli_free_result($result);
             mysqli_next_result($this->connection);
-            
+
             return array("error" => false);
         } catch(mysqli_sql_exception  $ex) {
             if ($ex->getSQLState() === "45006") {

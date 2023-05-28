@@ -24,7 +24,7 @@ class ProductMgr {
         return new Product(
             $productRow->id,
             $productRow->cod,
-            $productRow->NAME,
+            $productRow->name,
             $productRow->price,
             $category
         );
@@ -58,7 +58,7 @@ class ProductMgr {
             $products[] = new Product(
                 $row->id,
                 $row->cod,
-                $row->NAME,
+                $row->name,
                 $row->price,
                 $category
             );
