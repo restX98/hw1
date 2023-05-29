@@ -147,53 +147,6 @@ class DatabaseMgr {
         }
     }
 
-    public function createCategory($categoryName) {
-        $query = "CALL CreateCategory('$categoryName')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
-    public function updateCategory($id, $categoryName) {
-        $query = "CALL UpdateCategory('$id', '$categoryName')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
-    public function removeCategory($id) {
-        $query = "CALL RemoveCategory('$id')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
-    public function createProduct($cod, $name, $price, $category) {
-        $cod = mysqli_real_escape_string($this->connection, $cod);
-        $name = mysqli_real_escape_string($this->connection, $name);
-        $price = mysqli_real_escape_string($this->connection, $price);
-        $category = mysqli_real_escape_string($this->connection, $category);
-
-        $query = "CALL CreateProduct('$cod', '$name', '$price', '$category')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
-    public function updateProduct($id, $cod, $name, $price, $category) {
-        $cod = mysqli_real_escape_string($this->connection, $cod);
-        $name = mysqli_real_escape_string($this->connection, $name);
-        $price = mysqli_real_escape_string($this->connection, $price);
-        $category = mysqli_real_escape_string($this->connection, $category);
-
-        $query = "CALL UpdateProduct('$id', '$cod', '$name', '$price', '$category')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
-    public function removeProduct($id) {
-        $id = mysqli_real_escape_string($this->connection, $id);
-        $query = "CALL RemoveProduct('$id')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
     public function getProductsByCategory($category) {
         try{
             $category = mysqli_real_escape_string($this->connection, $category);
@@ -350,29 +303,6 @@ class DatabaseMgr {
         } catch(Exception $ex) {
             return array("error" => true);
         }
-    }
-
-    public function addProductToWishlist($customerID, $productID) {
-        $customerID = mysqli_real_escape_string($this->connection, $customerID);
-        $productID = mysqli_real_escape_string($this->connection, $productID);
-        $query = "CALL AddProductToWishlist('$customerID', '$productID')";
-
-        $result = mysqli_query($this->connection, $query);
-    }
-
-    public function getWishlistProducts($customerID) {
-        $customerID = mysqli_real_escape_string($this->connection, $customerID);
-        $query = "CALL GetWishlistProducts('$customerID')";
-
-        $result = mysqli_query($this->connection, $query);
-        
-        $products = Array();
-        while ($row = mysqli_fetch_object($result)) {
-            $products[] = $row;
-        }
-        mysqli_free_result($result);
-
-        return $products;
     }
 }
 

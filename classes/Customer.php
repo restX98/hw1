@@ -50,26 +50,5 @@ class Customer {
         }
         return $addresses;
     }
-
-    public function addProductToWishlist($product) {
-        $DatabaseMgr = new DatabaseMgr();
-        $DatabaseMgr->addProductToWishlist($this->id, $product->id);
-    }
-
-    public function getWishlistProducts() {
-        $DatabaseMgr = new DatabaseMgr();
-        $productRows = $DatabaseMgr->getWishlistProducts($this->id);
-        $products = array();
-        foreach ($productRows as $row) {
-            $products[] = new Product(
-                $row->id,
-                $row->cod,
-                $row->NAME,
-                $row->price,
-                $row->categoryName
-            );
-        }
-        return $products;
-    }
 }
 ?>
