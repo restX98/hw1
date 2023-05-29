@@ -1,4 +1,12 @@
 <?php
+require_once '../classes/CustomerMgr.php';
+$currentCustomer = CustomerMgr::getCurrentCustomer();
+
+if (is_null($currentCustomer)) {
+    header("Location: /hw1/login");
+    exit();
+}
+
 require_once '../classes/ProductMgr.php';
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/search.css");

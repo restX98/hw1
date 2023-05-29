@@ -4,7 +4,11 @@
     AssetMgr::addCss("/css/header.css");
     AssetMgr::addJs("/js/miniCart.js");
 
-    $currentBasket = BasketMgr::getCurrentBasket();
+    try{
+        $currentBasket = BasketMgr::getCurrentBasket();
+    } catch (Exception $ex) {
+        $currentBasket = null;
+    }
 ?>
 
 <?php include("head.php"); ?>
@@ -21,7 +25,7 @@
                     <img src="/hw1/client/icons/user.svg" alt="User Icon">
                 </a>
             </div>
-            <div class="cart icon" data-quantity=<?php echo $currentBasket->totalQuantity ?> >
+            <div class="cart icon" data-quantity=<?php echo !is_null($currentBasket) ? $currentBasket->totalQuantity : 0 ?> >
                 <a href="/hw1/cart">
                     <img src="/hw1/client/icons/cart.svg" alt="Cart Icon">
                 </a>

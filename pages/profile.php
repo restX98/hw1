@@ -4,7 +4,7 @@ require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/profile.css");
 $customer = CustomerMgr::getCurrentCustomer();
 
-if ($customer === null) {
+if (is_null($customer)) {
     header("Location: login");
     exit();
 }

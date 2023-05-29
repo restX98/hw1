@@ -1,11 +1,19 @@
 <?php
+require_once '../classes/CustomerMgr.php';
+$currentCustomer = CustomerMgr::getCurrentCustomer();
+
+if (is_null($currentCustomer)) {
+    header("Location: /hw1/login");
+    exit();
+}
+
 require_once '../classes/ProductMgr.php';
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/product.css");
 AssetMgr::addJs("/js/product.js");
 
 if (!isset($_GET['id'])) {
-    header("Location: home");
+    header("Location: /hw1/home");
     exit();
 } else {
     $productId = $_GET['id'];

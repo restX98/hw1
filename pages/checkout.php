@@ -1,4 +1,12 @@
 <?php
+require_once '../classes/CustomerMgr.php';
+$currentCustomer = CustomerMgr::getCurrentCustomer();
+
+if (is_null($currentCustomer)) {
+    header("Location: login");
+    exit();
+}
+
 require_once '../classes/BasketMgr.php';
 require_once '../classes/AssetMgr.php';
 AssetMgr::addCss("/css/checkout.css");

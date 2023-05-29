@@ -4,10 +4,9 @@ AssetMgr::addCss("/css/register.css");
 AssetMgr::addJs("/js/register.js");
 
 require_once '../classes/CustomerMgr.php';
-$customerMgr = new CustomerMgr();
-$currentCustomer = $customerMgr::getCurrentCustomer();
+$currentCustomer = CustomerMgr::getCurrentCustomer();
 
-if ($currentCustomer !== null) {
+if (!is_null($currentCustomer)) {
     header("Location: profile");
     exit();
 }
